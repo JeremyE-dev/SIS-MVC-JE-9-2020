@@ -43,6 +43,13 @@ namespace Exercises.Models.Repositories
             selectedState.StateName = state.StateName;
         }
 
+        public static void  EditStateName(State oldState, State newState)
+        {
+            var selectedState = _courses.FirstOrDefault(c => c.StateAbbreviation == oldState.StateAbbreviation);
+            selectedState.StateName = newState.StateName;
+            selectedState.StateAbbreviation = newState.StateAbbreviation;
+        }
+
         public static void Delete(string stateAbbreviation)
         {
             _courses.RemoveAll(c => c.StateAbbreviation == stateAbbreviation);

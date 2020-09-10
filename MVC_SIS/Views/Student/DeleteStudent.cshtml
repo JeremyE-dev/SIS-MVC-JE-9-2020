@@ -20,7 +20,7 @@
             @Html.HiddenFor(s => s.StudentId)
         <p>Are you sure that you wish to delete the student @Html.DisplayFor(s => s.FirstName) @Html.DisplayFor(s => s.LastName)?</p>
             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-            @Html.ActionLink("Cancel", "courses", "Admin", null, new { @class = "btn btn-sm btn-info" })
+            @Html.ActionLink("Cancel", "List", "Student", null, new { @class = "btn btn-sm btn-info" })
         }
     </div>
 </div>     

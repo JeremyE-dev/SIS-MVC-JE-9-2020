@@ -1,22 +1,24 @@
-﻿@model Exercises.Models.Data.Course
+﻿
+@model Exercises.Models.Data.Course
 @{
-    ViewBag.Title = "AddCourse";
+    ViewBag.Title = "EditCourse";
 }
 
-<h2>AddCourse</h2>
+<h2>EditCourse</h2>
 
 <div class="row">
     <div class="col-xs-12">
-       
+
         @Html.ActionLink("Return to List", "Courses", "Admin")
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
         @using (Html.BeginForm())
-        {
+        {   @Html.HiddenFor(m => m.CourseId)
         <div class="form-group">
             <label>Course</label>
+            <!--Hidden Field with course ID-->
             @Html.TextBoxFor(c => c.CourseName, new { @class = "form-control", placeholder = "Course Name" })
             <span class="text-danger">@Html.ValidationMessageFor(c => c.CourseName)</span>
         </div>
