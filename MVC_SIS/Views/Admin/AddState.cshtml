@@ -1,0 +1,31 @@
+﻿@model Exercises.Models.Data.State
+
+@{
+    ViewBag.Title = "AddState";
+}
+
+
+    <div class="row">
+
+        <div class=" col-xs-12">
+            <h3>Add State</h3>
+            @Html.ActionLink("Return to States List", "States", "Admin")
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                @using (Html.BeginForm())
+                {
+                <div class="form-group">
+                    <label>State Abbreviation</label>
+                    @Html.TextBoxFor(s => s.StateAbbreviation, new { @class = "form-control", placeholder = "State Abbreviation" })
+                    @Html.TextBoxFor(s => s.StateName, new { @class = "form-control", placeholder = "State Name" })
+                </div>
+                    <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                }
+
+
+            </div> 
+        </div>
+
+    </div>    

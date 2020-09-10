@@ -1,0 +1,26 @@
+﻿@model Exercises.Models.Data.Student
+@{
+    ViewBag.Title = "DeleteStudent";
+}
+
+<h2>DeleteStudent</h2>
+
+
+
+<div class="row">
+    <div class="col-xs-12">
+       
+        @Html.ActionLink("Return to List", "List", "Student")
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        @using (Html.BeginForm())
+        {
+            @Html.HiddenFor(s => s.StudentId)
+        <p>Are you sure that you wish to delete the student @Html.DisplayFor(s => s.FirstName) @Html.DisplayFor(s => s.LastName)?</p>
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+            @Html.ActionLink("Cancel", "courses", "Admin", null, new { @class = "btn btn-sm btn-info" })
+        }
+    </div>
+</div>     
