@@ -44,14 +44,24 @@ namespace Exercises.Controllers
 
             //trying to add use validation
 
-            studentVM.Student.Major = MajorRepository.Get(studentVM.Student.Major.MajorId);
-            StudentRepository.Add(studentVM.Student);
 
-            return RedirectToAction("List");
 
-            /*
 
-            if (string.IsNullOrEmpty(studentVM.Student.Major.MajorName)) 
+            if(MajorRepository.Get(studentVM.Student.Major.MajorId) != null)
+            {
+                studentVM.Student.Major = MajorRepository.Get(studentVM.Student.Major.MajorId);
+                StudentRepository.Add(studentVM.Student);
+            }
+
+            //studentVM.Student.Major = MajorRepository.Get(studentVM.Student.Major.MajorId);
+            
+            //StudentRepository.Add(studentVM.Student);
+
+            //return RedirectToAction("List");
+
+            
+
+            if (studentVM.Student.Major.MajorName != null) 
             {
 
                 ModelState.AddModelError("Student.Major.MajorName", "Please select a major");
@@ -65,7 +75,11 @@ namespace Exercises.Controllers
 
                 return RedirectToAction("List");
             }
-            */
+
+
+
+
+            
 
 
            
@@ -75,59 +89,100 @@ namespace Exercises.Controllers
 
 
         [HttpGet]
-
-        //this will get the student record I want, then I can display that record in the view
+        //when the "Edit" button in the student list is clicked - this method is called
         public ActionResult EditStudent(int id)
         {
+            //set student to the student object associated with this id number
+            // I don't think I need this, as it is not being used
             var student = StudentRepository.Get(id);
+            //set viewModel to a new instance of StudentVM
             var viewModel = new StudentVM();
+            //set the student (object) field in the viewModel instance to the
+            // student associated with the student id
             viewModel.Student = StudentRepository.Get(id);
+            //set the CouseItems field in the viewmodel instance to all of the 
+            //courses in the couse repository
             viewModel.SetCourseItems(CourseRepository.GetAll());
+            //set the CouseItems field in the viewmodel instance to all of the 
+            //majors in  in the major repository
             viewModel.SetMajorItems(MajorRepository.GetAll());
+            //send viewModel to the Edit Student View
             return View(viewModel);     
         }
 
      
 
         [HttpPost]
+
+        //when save button is clicked this method is called
         public ActionResult EditStudent(StudentVM studentVM)
         {
+            //set the couses field in the student field in the studentVM object to 
+            //an empty list of courses
             studentVM.Student.Courses = new List<Course>();
 
+            //for each course in the list of selected courses
+            //add it to the courses list in the student field of the student view model - no courses in here
             foreach (var id in studentVM.SelectedCourseIds)
                 studentVM.Student.Courses.Add(CourseRepository.Get(id));
 
+            //go to the major repository and get the major associated with this students major
+            //-- This is here to replace the major in case it has changed after user input
+            // set breakpoint to check if this value is null and is causeing an issue
             studentVM.Student.Major = MajorRepository.Get(studentVM.Student.Major.MajorId);
 
+            //get the student assosiated with this student id, se "student" to that student object
             var student = StudentRepository.Get(studentVM.Student.StudentId);
             //if studentVM.Student.Address.Street1 is null
             // required field - do not post , return to add screen add error message
 
-            if (studentVM.Student.Address.Street1 == null)
+            //update street 1
+            //student.Address.Street1 = studentVM.Student.Address.Street1;
+
+            if (studentVM.Student.Address.Street1 != null)
             {
-                ModelState.AddModelError("Street1", "Please Enter a Street Address");
+                //review this next 
+                //ModelState.AddModelError("Street1", "Please Enter a Street Address");
+                //update street 1
+                student.Address.Street1 = studentVM.Student.Address.Street1;
             }
 
-            if (studentVM.Student.Address.Street2 == null)
+            
+            if (studentVM.Student.Address.Street2 != null)
             {
-                student.Address = new Address();
+                //this will cause everything to be null - comment out for next run
+                //student.Address = new Address();
+                student.Address.Street2 = studentVM.Student.Address.Street2;
 
-                student.Address.Street2 = "this field is optional";
+                studentVM.Student.Address.Street2 = "";
             }
 
-            if (studentVM.Student.Address.City == null)
+            else
             {
-                ModelState.AddModelError("City", "Please Enter a City");
+
+                studentVM.Student.Address.Street2 = "";
             }
 
-            if (studentVM.Student.Address.State == null)
+
+
+
+
+            //student.Address.City = studentVM.Student.Address.City;
+            if (studentVM.Student.Address.City != null)
             {
-                ModelState.AddModelError("State", "Please Enter a State");
+                student.Address.City = studentVM.Student.Address.City;
             }
 
-            if (studentVM.Student.Address.PostalCode == null)
+            //student.Address.State = studentVM.Student.Address.State;
+            if (studentVM.Student.Address.State.StateAbbreviation != null)
             {
-                ModelState.AddModelError("Postal Code", "Please Enter a Postal Code");
+                student.Address.State.StateAbbreviation = studentVM.Student.Address.State.StateAbbreviation;
+            }
+
+            //student.Address.PostalCode = studentVM.Student.Address.PostalCode;
+            if (studentVM.Student.Address.PostalCode != null)
+            {
+                student.Address.PostalCode = studentVM.Student.Address.PostalCode;
             }
 
             //student.Address.Street1 = studentVM.Student.Address.Street1;
@@ -144,7 +199,9 @@ namespace Exercises.Controllers
             }
             else
             {
-                return View("studentVM");
+                studentVM.SetMajorItems(MajorRepository.GetAll());
+              
+                return View(studentVM);//
             }
 
 
