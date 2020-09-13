@@ -37,52 +37,117 @@ namespace Exercises.Controllers
         [HttpPost]
         public ActionResult Add(StudentVM studentVM)
         {
+            //Load courses
             studentVM.Student.Courses = new List<Course>();
 
             foreach (var id in studentVM.SelectedCourseIds)
                 studentVM.Student.Courses.Add(CourseRepository.Get(id));
 
-            //trying to add use validation
-
-
-
-
-            if(MajorRepository.Get(studentVM.Student.Major.MajorId) != null)
+            if(studentVM.Student.Major!=null)
             {
                 studentVM.Student.Major = MajorRepository.Get(studentVM.Student.Major.MajorId);
-                StudentRepository.Add(studentVM.Student);
             }
-
-            //studentVM.Student.Major = MajorRepository.Get(studentVM.Student.Major.MajorId);
             
-            //StudentRepository.Add(studentVM.Student);
-
-            //return RedirectToAction("List");
-
             
-
-            if (studentVM.Student.Major.MajorName != null) 
+            if (ModelState.IsValid)
             {
-
-                ModelState.AddModelError("Student.Major.MajorName", "Please select a major");
-                return RedirectToAction("Add");
+                StudentRepository.Add(studentVM.Student);
+                return RedirectToAction("List");
             }
 
             else
             {
-                studentVM.Student.Major = MajorRepository.Get(studentVM.Student.Major.MajorId);
-                StudentRepository.Add(studentVM.Student);
+                //studentVM.Student.Courses = new List<Course>();
 
-                return RedirectToAction("List");
+                studentVM.SetCourseItems(CourseRepository.GetAll());
+                foreach (var id in studentVM.SelectedCourseIds)
+                    studentVM.Student.Courses.Add(CourseRepository.Get(id));
+
+                studentVM.SetMajorItems(MajorRepository.GetAll());
+
+                return View(studentVM);
             }
 
 
 
 
-            
 
 
-           
+            ////is first name null
+            //if(studentVM.Student.FirstName != null)
+            //{
+            //    student.Address.Street1 = studentVM.Student.Address.Street1;
+            //}
+
+            //if (studentVM.Student.LastName != null)
+            //{
+
+            //}
+
+            //if (studentVM.Student.Major.MajorName != null)
+            //{
+
+            //}
+
+
+            //if (studentVM.Student.GPA != null)
+            //{
+
+            //}
+
+
+
+
+
+            ////if user hits save and any of these fields are null or empty
+            //// display error message by field
+            //// return to empty add screen
+            ////trying to add use validation
+
+            ////FirstName
+            ////LastName
+            ////GPA
+            ////
+
+
+            //if (MajorRepository.Get(studentVM.Student.Major.MajorId) != null)
+            //{
+            //    studentVM.Student.Major = MajorRepository.Get(studentVM.Student.Major.MajorId);
+            //    StudentRepository.Add(studentVM.Student);
+            //}
+
+            ////studentVM.Student.Major = MajorRepository.Get(studentVM.Student.Major.MajorId);
+
+            ////StudentRepository.Add(studentVM.Student);
+
+            ////return RedirectToAction("List");
+
+
+
+            //if (studentVM.Student.Major.MajorName != null) 
+            //{
+
+            //    //ModelState.AddModelError("Student.Major.MajorName", "Please select a major");
+            //    return RedirectToAction("Add");
+            //}
+
+            //else
+            //{
+            //    //studentVM.Student.Major = MajorRepository.Get(studentVM.Student.Major.MajorId);
+            //    //StudentRepository.Add(studentVM.Student);
+
+            //    return RedirectToAction("List");
+            //}
+
+
+
+
+
+
+
+
+
+
         }
 
         //add edit functioins here
@@ -144,6 +209,7 @@ namespace Exercises.Controllers
                 //review this next 
                 //ModelState.AddModelError("Street1", "Please Enter a Street Address");
                 //update street 1
+                student.Address = new Address();
                 student.Address.Street1 = studentVM.Student.Address.Street1;
             }
 
@@ -176,6 +242,7 @@ namespace Exercises.Controllers
             //student.Address.State = studentVM.Student.Address.State;
             if (studentVM.Student.Address.State.StateAbbreviation != null)
             {
+                student.Address.State = new State();
                 student.Address.State.StateAbbreviation = studentVM.Student.Address.State.StateAbbreviation;
             }
 
