@@ -15,7 +15,7 @@
                 <div class="row">
                     @using (Html.BeginForm())
                     {
-                        @Html.ValidationSummary()
+                       
                         <div class="col-xs-12 col-sm-7">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
@@ -41,7 +41,7 @@
                                     <div class="form-group">
                                         <label>GPA:</label>
                                         @Html.TextBoxFor(m => m.Student.GPA, new { @class = "form-control" })
-                                        <span class="text-danger">@Html.ValidationMessageFor(s => s.Student.Major.MajorId)</span>
+                                        <span class="text-danger">@Html.ValidationMessageFor(s => s.Student.GPA)</span>
 
                                     </div>
                                     <h4>Courses</h4>

@@ -37,7 +37,7 @@ namespace Exercises.Controllers
         [HttpPost]
         public ActionResult Add(StudentVM studentVM)
         {
-            //Load courses
+          
             studentVM.Student.Courses = new List<Course>();
 
             foreach (var id in studentVM.SelectedCourseIds)
@@ -57,7 +57,7 @@ namespace Exercises.Controllers
 
             else
             {
-                //studentVM.Student.Courses = new List<Course>();
+              
 
                 studentVM.SetCourseItems(CourseRepository.GetAll());
                 foreach (var id in studentVM.SelectedCourseIds)
@@ -68,89 +68,9 @@ namespace Exercises.Controllers
                 return View(studentVM);
             }
 
-
-
-
-
-
-            ////is first name null
-            //if(studentVM.Student.FirstName != null)
-            //{
-            //    student.Address.Street1 = studentVM.Student.Address.Street1;
-            //}
-
-            //if (studentVM.Student.LastName != null)
-            //{
-
-            //}
-
-            //if (studentVM.Student.Major.MajorName != null)
-            //{
-
-            //}
-
-
-            //if (studentVM.Student.GPA != null)
-            //{
-
-            //}
-
-
-
-
-
-            ////if user hits save and any of these fields are null or empty
-            //// display error message by field
-            //// return to empty add screen
-            ////trying to add use validation
-
-            ////FirstName
-            ////LastName
-            ////GPA
-            ////
-
-
-            //if (MajorRepository.Get(studentVM.Student.Major.MajorId) != null)
-            //{
-            //    studentVM.Student.Major = MajorRepository.Get(studentVM.Student.Major.MajorId);
-            //    StudentRepository.Add(studentVM.Student);
-            //}
-
-            ////studentVM.Student.Major = MajorRepository.Get(studentVM.Student.Major.MajorId);
-
-            ////StudentRepository.Add(studentVM.Student);
-
-            ////return RedirectToAction("List");
-
-
-
-            //if (studentVM.Student.Major.MajorName != null) 
-            //{
-
-            //    //ModelState.AddModelError("Student.Major.MajorName", "Please select a major");
-            //    return RedirectToAction("Add");
-            //}
-
-            //else
-            //{
-            //    //studentVM.Student.Major = MajorRepository.Get(studentVM.Student.Major.MajorId);
-            //    //StudentRepository.Add(studentVM.Student);
-
-            //    return RedirectToAction("List");
-            //}
-
-
-
-
-
-
-
-
-
-
         }
 
-        //add edit functioins here
+    
 
 
         [HttpGet]
@@ -179,36 +99,25 @@ namespace Exercises.Controllers
 
         [HttpPost]
 
-        //when save button is clicked this method is called
+      
         public ActionResult EditStudent(StudentVM studentVM)
         {
-            //set the couses field in the student field in the studentVM object to 
-            //an empty list of courses
+            
             studentVM.Student.Courses = new List<Course>();
 
-            //for each course in the list of selected courses
-            //add it to the courses list in the student field of the student view model - no courses in here
+        
             foreach (var id in studentVM.SelectedCourseIds)
                 studentVM.Student.Courses.Add(CourseRepository.Get(id));
 
-            //go to the major repository and get the major associated with this students major
-            //-- This is here to replace the major in case it has changed after user input
-            // set breakpoint to check if this value is null and is causeing an issue
             studentVM.Student.Major = MajorRepository.Get(studentVM.Student.Major.MajorId);
 
-            //get the student assosiated with this student id, se "student" to that student object
+         
             var student = StudentRepository.Get(studentVM.Student.StudentId);
-            //if studentVM.Student.Address.Street1 is null
-            // required field - do not post , return to add screen add error message
-
-            //update street 1
-            //student.Address.Street1 = studentVM.Student.Address.Street1;
+        
 
             if (studentVM.Student.Address.Street1 != null)
             {
-                //review this next 
-                //ModelState.AddModelError("Street1", "Please Enter a Street Address");
-                //update street 1
+              
                 student.Address = new Address();
                 student.Address.Street1 = studentVM.Student.Address.Street1;
             }
@@ -216,8 +125,7 @@ namespace Exercises.Controllers
             
             if (studentVM.Student.Address.Street2 != null)
             {
-                //this will cause everything to be null - comment out for next run
-                //student.Address = new Address();
+              
                 student.Address.Street2 = studentVM.Student.Address.Street2;
 
                 studentVM.Student.Address.Street2 = "";
@@ -230,33 +138,26 @@ namespace Exercises.Controllers
             }
 
 
-
-
-
-            //student.Address.City = studentVM.Student.Address.City;
+           
             if (studentVM.Student.Address.City != null)
             {
                 student.Address.City = studentVM.Student.Address.City;
             }
 
-            //student.Address.State = studentVM.Student.Address.State;
+           
             if (studentVM.Student.Address.State.StateAbbreviation != null)
             {
                 student.Address.State = new State();
                 student.Address.State.StateAbbreviation = studentVM.Student.Address.State.StateAbbreviation;
             }
 
-            //student.Address.PostalCode = studentVM.Student.Address.PostalCode;
+        
             if (studentVM.Student.Address.PostalCode != null)
             {
                 student.Address.PostalCode = studentVM.Student.Address.PostalCode;
             }
 
-            //student.Address.Street1 = studentVM.Student.Address.Street1;
-            //student.Address.Street2 = studentVM.Student.Address.Street2;
-            //student.Address.City = studentVM.Student.Address.City;
-            //student.Address.State = studentVM.Student.Address.State;
-            //student.Address.PostalCode = studentVM.Student.Address.PostalCode;
+
 
             if (ModelState.IsValid)
             {
@@ -275,7 +176,7 @@ namespace Exercises.Controllers
         }
 
         [HttpGet]
-        //going to try changing from "state abbrevfiation to id" as variable name
+    
         public ActionResult DeleteStudent(int id)
         {
             var student = StudentRepository.Get(id);
